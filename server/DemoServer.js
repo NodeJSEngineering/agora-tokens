@@ -1,14 +1,15 @@
-//var fs = require('fs');
-//var https = require('https');
+// var fs = require('fs');
+// var https = require('https');
 var http = require('http');
 var express = require('express');
+require('dotenv').config();
 var {RtcTokenBuilder, RtmTokenBuilder, RtcRole, RtmRole} = require('agora-access-token')
 
 var PORT = 8080;
 
 // Fill the appID and appCertificate key given by Agora.io
-var appID = "";
-var appCertificate = "";
+var appID = process.env.appID;
+var appCertificate = process.env.appCertificate;
 
 // token expire time, hardcode to 3600 seconds = 1 hour
 var expirationTimeInSeconds = 3600
@@ -55,12 +56,14 @@ var generateRtmToken = function(req, resp) {
 
 app.get('/rtcToken', generateRtcToken);
 app.get('/rtmToken', generateRtmToken);
-
+app.get('/', (req, res) => {
+    res.send('AgoraSignServer starts at ' + app.get('port'));
+})
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('AgoraSignServer starts at ' + app.get('port'));
 });
 
-//https.createServer(credentials, app).listen(app.get('port') + 1, function() {
+// https.createServer(credentials, app).listen(app.get('port') + 1, function() {
 //    console.log('AgoraSignServer starts at ' + (app.get('port') + 1));
-//});
+// });
