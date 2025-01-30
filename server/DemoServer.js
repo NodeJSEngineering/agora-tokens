@@ -3,6 +3,7 @@
 var http = require('http');
 var express = require('express');
 require('dotenv').config();
+var cors = require("cors")
 var {RtcTokenBuilder, RtmTokenBuilder, RtcRole, RtmRole} = require('agora-access-token')
 
 var PORT = 8080;
@@ -16,6 +17,7 @@ var expirationTimeInSeconds = 3600
 var role = RtcRole.PUBLISHER
 
 var app = express();
+app.use(cors());
 app.disable('x-powered-by');
 app.set('port', PORT);
 app.use(express.favicon());
