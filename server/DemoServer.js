@@ -56,8 +56,19 @@ var generateRtmToken = function(req, resp) {
     return resp.json({ 'key': key }).send();
 };
 
+var getAppData = function(req, resp) {
+    var channelName = req.query.channelName;
+    if (!channelName) {
+        return resp.status(400).json({ 'error': 'channelName is required' }).send();
+    }
+    resp.header("Access-Control-Allow-Origin", "*")
+        //resp.header("Access-Control-Allow-Origin", "http://ip:port")
+    return resp.json({ 'appid': process.env.appID , 'channelName': channelName}).send();
+};
+
 app.get('/rtcToken', generateRtcToken);
 app.get('/rtmToken', generateRtmToken);
+app.get('/appDetails', getAppData);
 app.get('/', (req, res) => {
     res.send('AgoraSignServer starts at ' + app.get('port'));
 })
